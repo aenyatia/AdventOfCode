@@ -26,4 +26,21 @@ public class Day1
 
         Console.WriteLine(max);
     }
+
+    public static void Part2()
+    {
+        var result = File
+            .ReadAllText("2022/Day1/input.txt")
+            .Trim()
+            .Split("\n\n")
+            .Select(line => line
+                .Split("\n")
+                .Select(int.Parse)
+                .Sum())
+            .OrderByDescending(s => s)
+            .Take(3)
+            .Sum();
+
+        Console.WriteLine(result);
+    }
 }
