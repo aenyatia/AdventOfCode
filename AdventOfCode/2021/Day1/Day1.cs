@@ -17,4 +17,20 @@ public class Day1
 
         Console.WriteLine(count);
     }
+
+    public static void Part2()
+    {
+        var input = File
+            .ReadLines("2021/Day1/input.txt")
+            .Select(int.Parse)
+            .ToList();
+
+        var count = 0;
+
+        for (var i = 3; i < input.Count; i++)
+            if (input[i] > input[i - 3])
+                count++;
+
+        Console.WriteLine(count);
+    }
 }
