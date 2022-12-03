@@ -27,4 +27,24 @@ public class Day3
 
         Console.WriteLine(sum);
     }
+
+    public static void Part2()
+    {
+        var input = File.ReadAllLines("2022/Day3/input.txt");
+
+        var itemTypes = new List<char>();
+
+        for (var i = 2; i < input.Length; i += 3)
+        {
+            var x = input[i - 2].ToHashSet();
+            var y = input[i - 1].ToHashSet();
+            var z = input[i - 0].ToHashSet();
+
+            itemTypes.AddRange(x.Intersect(y).Intersect(z));
+        }
+
+        var sum = itemTypes.Sum(i => char.IsLower(i) ? i - 96 : i - 38);
+
+        Console.WriteLine(sum);
+    }
 }
