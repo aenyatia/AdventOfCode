@@ -21,4 +21,24 @@ public class Day6
 
         Console.WriteLine(result);
     }
+
+    public static void Part2()
+    {
+        var input = File
+            .ReadAllText("2022/Day6/input.txt")
+            .Trim();
+
+        var result = -1;
+        for (var i = 14; i < input.Length; i++)
+        {
+            var set = input[(i - 14)..i].ToHashSet();
+
+            if (set.Count != 14) continue;
+
+            result = i;
+            break;
+        }
+
+        Console.WriteLine(result);
+    }
 }
