@@ -2,6 +2,7 @@
 
 public class Day7
 {
+    private static readonly SortedSet<int> DirSizes = new();
     private static int _sumOfSelectedSizes;
 
     public static void Part1()
@@ -12,6 +13,21 @@ public class Day7
         TreeDfs(root);
 
         Console.WriteLine(_sumOfSelectedSizes);
+    }
+
+    public static void Part2()
+    {
+        const int availableSpace = 70000000;
+        const int neededSpace = 30000000;
+
+        var commands = File.ReadAllLines("2022/Day7/input.txt")[1..];
+        var root = BuildTree(commands);
+
+        var usedSpace = TreeDfs(root);
+
+        var result = DirSizes.First(size => availableSpace - usedSpace + size >= neededSpace);
+
+        Console.WriteLine(result);
     }
 
     private static Node BuildTree(IEnumerable<string> commands)
@@ -62,6 +78,8 @@ public class Day7
 
         if (root.Size <= 100000)
             _sumOfSelectedSizes += root.Size;
+
+        DirSizes.Add(root.Size);
 
         return root.Size;
     }
