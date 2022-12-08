@@ -40,4 +40,88 @@ public class Day8
 
         Console.WriteLine(visibleTrees);
     }
+
+    public static void Part2()
+    {
+        var input = File
+            .ReadAllLines("2022/Day8/input.txt")
+            .Select(line => line
+                .Select(c => (int)char.GetNumericValue(c))
+                .ToList())
+            .ToList();
+
+        var rows = input.Count;
+        var cols = input.First().Count;
+        var maxVisibleTrees = 0;
+
+        for (var row = 0; row < rows; row++)
+        {
+            for (var col = 0; col < cols; col++)
+            {
+                var treeHeight = input[row][col];
+                var (left, right, up, down) = (0, 0, 0, 0);
+
+                for (var i = col - 1; i >= 0; i--)
+                {
+                    if (input[row][i] < treeHeight)
+                    {
+                        left++;
+                        continue;
+                    }
+
+                    if (input[row][i] == treeHeight)
+                        left++;
+
+                    break;
+                }
+
+                for (var i = col + 1; i < cols; i++)
+                {
+                    if (input[row][i] < treeHeight)
+                    {
+                        right++;
+                        continue;
+                    }
+
+                    if (input[row][i] == treeHeight)
+                        right++;
+
+                    break;
+                }
+
+                for (var i = row - 1; i >= 0; i--)
+                {
+                    if (input[i][col] < treeHeight)
+                    {
+                        up++;
+                        continue;
+                    }
+
+                    if (input[i][col] == treeHeight)
+                        up++;
+
+                    break;
+                }
+
+                for (var i = row + 1; i < rows; i++)
+                {
+                    if (input[i][col] < treeHeight)
+                    {
+                        down++;
+                        continue;
+                    }
+
+                    if (input[i][col] == treeHeight)
+                        down++;
+
+                    break;
+                }
+
+                if (left * right * up * down > maxVisibleTrees)
+                    maxVisibleTrees = left * right * up * down;
+            }
+        }
+
+        Console.WriteLine(maxVisibleTrees);
+    }
 }
