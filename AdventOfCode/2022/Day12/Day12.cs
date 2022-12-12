@@ -21,6 +21,29 @@ public class Day12
         Console.WriteLine(ShortestPath(input, start, end));
     }
 
+    public static void Part2()
+    {
+        var input = File.ReadAllLines("2022/Day12/input.txt");
+        var depths = new HashSet<int>();
+
+        var starts = new HashSet<(int x, int y)>();
+        var end = (0, 0);
+
+        for (var x = 0; x < input.Length; x++)
+            for (var y = 0; y < input.First().Length; y++)
+            {
+                if (input[x][y] == 'a') starts.Add((x, y));
+                if (input[x][y] == 'E') end = (x, y);
+            }
+
+        foreach (var depth in starts
+                     .Select(start => ShortestPath(input, start, end))
+                     .Where(depth => depth > 0))
+            depths.Add(depth);
+
+        Console.WriteLine(depths.Min());
+    }
+
     public static int ShortestPath(IList<string> input, (int x, int y) start, (int x, int y) end)
     {
         var visited = new HashSet<(int x, int y)>();
@@ -32,12 +55,12 @@ public class Day12
         {
             queue.TryDequeue(out var position, out var depth);
 
-            if (visited.Contains((position.x, position.y))) 
+            if (visited.Contains((position.x, position.y)))
                 continue;
 
             visited.Add((position.x, position.y));
 
-            if (position == end) 
+            if (position == end)
                 return depth;
 
             foreach (var (x, y) in GetNeighbors(input, position))
