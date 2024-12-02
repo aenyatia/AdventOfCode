@@ -16,6 +16,20 @@ public static class Day2
         Console.WriteLine($"[Part1] {safeReports}");
     }
 
+    public static void Part2()
+    {
+        var input = File.ReadAllLines(Path)
+            .Select(line => line.Split(' ')
+                .Select(int.Parse).ToArray())
+            .ToArray();
+
+        var safeReports = input.Count(level => level
+            .Select((_, i) => (int[]) [..level[..i], ..level[(i + 1)..]])
+            .Any(IsSafe));
+
+        Console.WriteLine($"[Part2] {safeReports}");
+    }
+
     private static bool IsSafe(int[] level)
     {
         var diff = level[1] - level[0];
