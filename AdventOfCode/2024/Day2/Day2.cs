@@ -42,7 +42,7 @@ public static class Day2
         {
             for (var i = 0; i < level.Length; i++)
             {
-                Span<int> subLevel = [..level[..i], ..level[(i + 1)..]];
+                int[] subLevel = [..level[..i], ..level[(i + 1)..]];
 
                 if (!IsSafe(subLevel)) continue;
 
@@ -55,11 +55,6 @@ public static class Day2
     }
 
     private static bool IsSafe(int[] level)
-    {
-        return IsSafe(level.AsSpan());
-    }
-
-    private static bool IsSafe(Span<int> level)
     {
         var diff = level[1] - level[0];
 
@@ -81,7 +76,6 @@ public static class Day2
 
                 return true;
             }
-
             default:
                 return false;
         }
