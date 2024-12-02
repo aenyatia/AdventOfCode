@@ -1,0 +1,46 @@
+namespace AdventOfCode._2024.Day2;
+
+public static class Day2
+{
+    private const string Path = "2024/Day2/input.txt";
+
+    public static void Part1()
+    {
+        var input = File.ReadAllLines(Path)
+            .Select(line => line.Split(' ')
+                .Select(int.Parse).ToArray())
+            .ToArray();
+
+        var safeReports = input.Count(IsSafe);
+
+        Console.WriteLine($"[Part1] {safeReports}");
+    }
+
+    private static bool IsSafe(int[] level)
+    {
+        var diff = level[1] - level[0];
+
+        switch (diff)
+        {
+            case 1 or 2 or 3:
+            {
+                for (var i = 1; i < level.Length; i++)
+                    if (level[i] - level[i - 1] is not (1 or 2 or 3))
+                        return false;
+
+                return true;
+            }
+            case -1 or -2 or -3:
+            {
+                for (var i = 1; i < level.Length; i++)
+                    if (level[i] - level[i - 1] is not (-1 or -2 or -3))
+                        return false;
+
+                return true;
+            }
+
+            default:
+                return false;
+        }
+    }
+}
