@@ -16,6 +16,27 @@ public static class Day3
 
         Console.WriteLine($"[Part1] {result}");
     }
+    
+    public static void Part2()
+    {
+        var input = File.ReadAllText(Path);
+
+        var numbers = new List<(int, int)>();
+        var parts = input.Split("don't()");
+
+        FindValid(parts.First(), numbers);
+        foreach (var part in parts.Skip(1))
+        {
+            var index = part.IndexOf("do()", StringComparison.Ordinal);
+
+            if (index != -1)
+                FindValid(part[(index + 4)..], numbers);
+        }
+
+        var result = numbers.Aggregate(0, (current, number) => current + number.Item1 * number.Item2);
+
+        Console.WriteLine($"[Part2] {result}");
+    }
 
     private static void FindValid(string input, List<(int, int)> numbers)
     {
