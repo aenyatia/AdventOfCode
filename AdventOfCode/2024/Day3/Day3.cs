@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace AdventOfCode._2024.Day3;
 
 public static class Day3
@@ -16,7 +18,22 @@ public static class Day3
 
         Console.WriteLine($"[Part1] {result}");
     }
-    
+
+    public static void Part1Ver2()
+    {
+        var input = File.ReadAllText(Path);
+
+        var mul = 0;
+        foreach (Match match in RegexLib.FindValidMulInstructions(input))
+        {
+            var num1 = int.Parse(match.Groups[1].ValueSpan);
+            var num2 = int.Parse(match.Groups[2].ValueSpan);
+            mul += num1 * num2;
+        }
+
+        Console.WriteLine($"[Part1] {mul}");
+    }
+
     public static void Part2()
     {
         var input = File.ReadAllText(Path);
@@ -88,5 +105,16 @@ public static class Day3
             input = input[(start + 4)..];
             start = input.IndexOf("mul(", StringComparison.Ordinal);
         }
+    }
+}
+
+public static partial class RegexLib
+{
+    [GeneratedRegex(@"mul\((\d{1,3}),(\d{1,3})\)")]
+    private static partial Regex MulInstruction();
+
+    public static MatchCollection FindValidMulInstructions(string input)
+    {
+        return MulInstruction().Matches(input);
     }
 }
