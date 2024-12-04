@@ -24,10 +24,10 @@ public static class Day3
         var input = File.ReadAllText(Path);
 
         var mul = 0;
-        foreach (Match match in RegexLib.FindValidMulInstructions(input))
+        foreach (Match match in RegexLib.MulMatches(input))
         {
-            var num1 = int.Parse(match.Groups[1].ValueSpan);
-            var num2 = int.Parse(match.Groups[2].ValueSpan);
+            var num1 = int.Parse(match.Groups[1].Value);
+            var num2 = int.Parse(match.Groups[2].Value);
             mul += num1 * num2;
         }
 
@@ -53,6 +53,26 @@ public static class Day3
         var result = numbers.Aggregate(0, (current, number) => current + number.Item1 * number.Item2);
 
         Console.WriteLine($"[Part2] {result}");
+    }
+
+    public static void Part2Ver2()
+    {
+        var input = File.ReadAllText(Path);
+
+        var mul = 0;
+        var isEnabled = true;
+        foreach (Match match in RegexLib.MulAndSwitchMatches(input))
+        {
+            if (match.Groups["switch"].Value == string.Empty && isEnabled)
+            {
+                var num1 = int.Parse(match.Groups[1].Value);
+                var num2 = int.Parse(match.Groups[2].Value);
+                mul += num1 * num2;
+            }
+            else isEnabled = match.Groups["switch"].Value == "do()";
+        }
+
+        Console.WriteLine($"[Part2] {mul}");
     }
 
     private static void FindValid(string input, List<(int, int)> numbers)
@@ -111,10 +131,14 @@ public static class Day3
 public static partial class RegexLib
 {
     [GeneratedRegex(@"mul\((\d{1,3}),(\d{1,3})\)")]
-    private static partial Regex MulInstruction();
+    private static partial Regex Mul();
 
-    public static MatchCollection FindValidMulInstructions(string input)
-    {
-        return MulInstruction().Matches(input);
-    }
+    [GeneratedRegex(@"mul\((\d+),(\d+)\)|(?<switch>do\(\)|don't\(\))")]
+    private static partial Regex MulAndSwitch();
+
+    public static MatchCollection MulMatches(string input)
+        => Mul().Matches(input);
+
+    public static MatchCollection MulAndSwitchMatches(string input)
+        => MulAndSwitch().Matches(input);
 }
