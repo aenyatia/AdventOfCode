@@ -43,5 +43,24 @@ public static class Day4
         Console.WriteLine($"[Part1] {count}");
     }
 
+    public static void Part2()
+    {
+        var input = File.ReadAllLines(Path);
+        var count = 0;
+
+        for (var row = 0; row < input.Length - 2; row++)
+        for (var col = 0; col < input[row].Length - 2; col++)
+        {
+            var diag = $"{input[row][col]}{input[row + 1][col + 1]}{input[row + 2][col + 2]}";
+            var antiDiag = $"{input[row][col + 2]}{input[row + 1][col + 1]}{input[row + 2][col]}";
+
+            if (IsMAS(diag) && IsMAS(antiDiag))
+                count += 1;
+        }
+
+        Console.WriteLine($"[Part2] {count}");
+    }
+
     private static bool IsXMAS(string input) => input.Contains("XMAS") || input.Contains("SAMX");
+    private static bool IsMAS(string input) => input.Contains("MAS") || input.Contains("SAM");
 }
